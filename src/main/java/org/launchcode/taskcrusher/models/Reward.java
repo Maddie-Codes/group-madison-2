@@ -1,7 +1,6 @@
 package org.launchcode.taskcrusher.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "rewards")
@@ -15,14 +14,30 @@ public class Reward {
 
     @Size(max = 50)
     @Column(name="reward_name")
-    private String rewardName;
+    private String name;
     @Column(name="reward_des")
-    private String rewardDescription;
+    private String description;
     @Column(name="reward_points")
     private int points;
 
     public Reward() {
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getId() {
@@ -33,21 +48,6 @@ public class Reward {
         this.id = id;
     }
 
-    public String getRewardName() {
-        return rewardName;
-    }
-
-    public void setRewardName(String rewardName) {
-        this.rewardName = rewardName;
-    }
-
-    public String getRewardDescription() {
-        return rewardDescription;
-    }
-
-    public void setRewardDescription(String rewardDescription) {
-        this.rewardDescription = rewardDescription;
-    }
 
     public int getPoints() {
         return points;
@@ -61,8 +61,8 @@ public class Reward {
     public String toString() {
         return "Reward{" +
                 "id=" + id +
-                ", rewardName='" + rewardName + '\'' +
-                ", rewardDescription='" + rewardDescription + '\'' +
+                ", Name='" + name + '\'' +
+                ", Description='" + description + '\'' +
                 ", points=" + points +
                 '}';
     }

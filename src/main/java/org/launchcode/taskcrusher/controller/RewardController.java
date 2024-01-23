@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/rewards")
+@CrossOrigin("http://localhost:3000")
 public class RewardController {
     @Autowired
     private RewardRepository rewardRepository;
@@ -30,4 +32,36 @@ public class RewardController {
         Reward createdReward = rewardRepository.save(reward);
         return new ResponseEntity<>(createdReward, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Reward> getRewardById(@PathVariable int id) {
+        Optional<Reward> optionalReward = rewardRepository.findById(id);
+
+        if (optionalReward.isPresent()) {
+            return new ResponseEntity<>(optionalReward.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/{rewardId}")
+    public ResponseEntity<Reward> updateReward(@PathVariable int rewardId, @RequestBody Reward updatedReward) {
+        Reward existingReward = rewardRepository.findById(rewardId).orElse(null);
+
+        if (existingReward != null) {
+            existingReward.setName(updatedReward.getName());
+            existingReward.setDescription(updatedReward.getDescription());
+            existingReward.setPoints(updatedReward.getPoints());
+
+            Reward savedReward = rewardRepository.save(existingReward);
+            return new ResponseEntity<>(savedReward, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    @DeleteMapping("{rewardId}")
+    public ResponseEntity<Void> DeleteReward(@PathVariable int rewardId)
+    {
+        rewardRepository.deleteById(rewardId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

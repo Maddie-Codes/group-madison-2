@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rewards List</title>
+</head>
+<body>
+
+<h2>Rewards List</h2>
+The reward is confirmed: <span th:text="${reward.rewardName} + ' ' + ${reward.rewardDescription}" />
+Points: <span th:text="${reward.points}" />
+
+</body>
+</html>
+
