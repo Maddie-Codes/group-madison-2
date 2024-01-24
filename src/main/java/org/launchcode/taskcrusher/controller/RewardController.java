@@ -23,8 +23,8 @@ public class RewardController {
     private RewardRepository rewardRepository;
 
     @GetMapping("/list")
-    public List<Reward> displayAllRewards() {
-        return rewardRepository.findAll();
+    public ResponseEntity<List<Reward>> displayAllRewards() {
+        return new ResponseEntity<>(rewardRepository.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -43,7 +43,7 @@ public class RewardController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @PutMapping("/{rewardId}")
+    @PutMapping("edit/{rewardId}")
     public ResponseEntity<Reward> updateReward(@PathVariable int rewardId, @RequestBody Reward updatedReward) {
         Reward existingReward = rewardRepository.findById(rewardId).orElse(null);
 
