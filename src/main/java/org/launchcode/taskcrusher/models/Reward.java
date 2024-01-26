@@ -9,7 +9,7 @@ public class Reward {
     @Id
     @GeneratedValue
     @Column(name="reward_id")
-    private int id;
+    private int rewardId;
 
 
     @Size(max = 50)
@@ -40,14 +40,13 @@ public class Reward {
         this.description = description;
     }
 
-    public int getId() {
-        return id;
+    public int getRewardId() {
+        return rewardId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRewardId(int rewardId) {
+        this.rewardId = rewardId;
     }
-
 
     public int getPoints() {
         return points;
@@ -57,12 +56,13 @@ public class Reward {
         this.points = points;
     }
 
+
     @Override
     public String toString() {
         return "Reward{" +
-                "id=" + id +
-                ", Name='" + name + '\'' +
-                ", Description='" + description + '\'' +
+                "rewardId=" + rewardId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", points=" + points +
                 '}';
     }

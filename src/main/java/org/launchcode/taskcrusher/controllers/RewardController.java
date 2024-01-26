@@ -1,18 +1,13 @@
-package org.launchcode.taskcrusher.controller;
+package org.launchcode.taskcrusher.controllers;
 
-import jakarta.validation.Valid;
 import org.launchcode.taskcrusher.models.Reward;
 import org.launchcode.taskcrusher.models.data.RewardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -34,8 +29,8 @@ public class RewardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Reward> getRewardById(@PathVariable int id) {
-        Optional<Reward> optionalReward = rewardRepository.findById(id);
+    public ResponseEntity<Reward> getRewardById(@PathVariable int rewardId) {
+        Optional<Reward> optionalReward = rewardRepository.findById(rewardId);
 
         if (optionalReward.isPresent()) {
             return new ResponseEntity<>(optionalReward.get(), HttpStatus.OK);
