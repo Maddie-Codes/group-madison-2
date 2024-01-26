@@ -28,7 +28,7 @@ public class RewardController {
         return new ResponseEntity<>(createdReward, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{rewardId}")
     public ResponseEntity<Reward> getRewardById(@PathVariable int rewardId) {
         Optional<Reward> optionalReward = rewardRepository.findById(rewardId);
 
