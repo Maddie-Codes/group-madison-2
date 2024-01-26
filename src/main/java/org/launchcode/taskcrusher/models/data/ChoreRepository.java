@@ -11,5 +11,4 @@ import java.util.List;
 public interface ChoreRepository extends CrudRepository<Chore, Integer> {
 
     List<Chore> findByKid(Kid kid);
-
 }

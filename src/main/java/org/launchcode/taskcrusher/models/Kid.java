@@ -31,7 +31,6 @@ public class Kid {
     }
 
 
-
     @Override
     public String toString() {
         return "Kid{" +
