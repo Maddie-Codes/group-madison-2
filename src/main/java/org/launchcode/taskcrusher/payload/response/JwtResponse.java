@@ -1,6 +1,6 @@
 package org.launchcode.taskcrusher.payload.response;
 
-import lombok.Getter;
+//import lombok.Getter;
 
 import java.util.List;
 
@@ -8,13 +8,9 @@ public class JwtResponse {
 
     private String token;
     private String type = "Bearer";
-    @Getter
     private Long id;
-    @Getter
     private String username;
-    @Getter
     private String email;
-    @Getter
     private List<String> roles;
 
     public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
