@@ -8,8 +8,6 @@ import java.time.LocalDate;
 @Table(name = "holiday")
 public class Holiday {
     @Id
-    @GeneratedValue
-    private int id;
     @Column(name = "holidayDate")
     private LocalDate holidayDate;
 
