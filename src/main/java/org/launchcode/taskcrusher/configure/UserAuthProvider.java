@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+//import org.launchcode.taskcrusher.models.dto.KidUserDto;
+import org.launchcode.taskcrusher.models.dto.KidUserDto;
 import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.launchcode.taskcrusher.service.UserService;
 import jakarta.annotation.PostConstruct;
@@ -47,10 +49,27 @@ public class UserAuthProvider {
                 .withExpiresAt(validity)
                 .withClaim("firstName", user.getFirstName())
                 .withClaim("lastName", user.getLastName())
+                .withClaim("role","parent")
                 .sign(algorithm);
 
         logger.info("Generated Token: {}", token);// Print the token to console
         return token;
+    }
+
+    public String createKidToken(KidUserDto kidUser) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + 3600000); //1 hour
+
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        String kidToken = JWT.create()
+                .withSubject(kidUser.getKidUsername())
+                .withIssuedAt(now)
+                .withExpiresAt(validity)
+                .withClaim("firstName", kidUser.getFirstName())
+                .withClaim("role","kid")
+                .sign(algorithm);
+
+        return kidToken;
     }
 
     public Authentication validateToken(String token) {
@@ -69,15 +88,31 @@ public class UserAuthProvider {
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 
+    public Authentication validateKidToken(String kidToken) {
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+        JWTVerifier verifier = JWT.require(algorithm).build();
+
+        DecodedJWT decoded = verifier.verify(kidToken);
+
+        KidUserDto kidUser = KidUserDto.builder()
+                .kidUsername(decoded.getSubject())
+                .firstName(decoded.getClaim("firstName").asString())
+                .build();
+
+        return new UsernamePasswordAuthenticationToken(kidUser, null, Collections.emptyList());
+    }
+
     public  Authentication validateTokenStrongly(String token) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         JWTVerifier verifier = JWT.require(algorithm).build();
 
         DecodedJWT decoded = verifier.verify(token);
+        //UserDto user = userService.findByUsername(decoded.getSubject());
 
-        UserDto user = userService.findByUsername(decoded.getSubject());
+        KidUserDto kidUser = userService.findByKidUsername(decoded.getSubject());
 
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(kidUser, null, Collections.emptyList());
     }
 }

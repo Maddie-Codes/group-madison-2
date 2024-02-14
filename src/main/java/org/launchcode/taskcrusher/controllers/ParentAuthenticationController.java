@@ -2,6 +2,7 @@ package org.launchcode.taskcrusher.controllers;
 
 import org.launchcode.taskcrusher.configure.UserAuthProvider;
 import org.launchcode.taskcrusher.models.dto.CredentialsDto;
+import org.launchcode.taskcrusher.models.dto.KidUserDto;
 import org.launchcode.taskcrusher.models.dto.SignUpDto;
 import org.launchcode.taskcrusher.models.dto.UserDto;
 import org.launchcode.taskcrusher.service.UserService;
@@ -39,6 +40,20 @@ public class ParentAuthenticationController {
         UserDto createUser = userService.register(user);
         createUser.setToken(userAuthProvider.createToken(createUser));
         return ResponseEntity.created(URI.create("/users/" + createUser.getId())).body(createUser);
+    }
+
+    @PostMapping("api/kidRegister")
+    public ResponseEntity<KidUserDto> addKidUser(@RequestBody @Valid SignUpDto kidUser) {
+        KidUserDto createKidUser = userService.kidRegister(kidUser);
+        createKidUser.setToken(userAuthProvider.createKidToken(createKidUser));
+        return ResponseEntity.created(URI.create("/kidUsers" + createKidUser.getId())).body(createKidUser);
+    }
+
+    @PostMapping("/api/kidLogin")
+    public ResponseEntity<KidUserDto> childLogin(@RequestBody @Valid CredentialsDto credentialsDto) {
+        KidUserDto kidUserDto = userService.kidLogin(credentialsDto);
+        kidUserDto.setToken(userAuthProvider.createKidToken(kidUserDto));
+        return ResponseEntity.ok(kidUserDto);
     }
 
 //    //Handler for logging out

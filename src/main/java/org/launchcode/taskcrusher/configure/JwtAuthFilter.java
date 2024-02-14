@@ -22,7 +22,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-
         if (header != null) {
             String[] authElements = header.split(" ");
             //JWT MUST have the correct length and bearer token
@@ -30,7 +29,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 try {
                     if ("GET".equals(request.getMethod())) {
                         SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateToken(authElements[1]));
-                    } else {SecurityContextHolder.getContext().setAuthentication(
+                    } else if ("GET".equals(request.getMethod())) {
+                        SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateKidToken(authElements[1]));
+                    }
+                    else {SecurityContextHolder.getContext().setAuthentication(
                             userAuthProvider.validateTokenStrongly(authElements[1]));
                     }
                 } catch (RuntimeException e) {

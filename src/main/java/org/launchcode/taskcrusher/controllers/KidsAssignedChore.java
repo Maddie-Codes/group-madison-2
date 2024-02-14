@@ -27,7 +27,6 @@ public class KidsAssignedChore {
     @GetMapping("/kids-assigned-chores/{kidId}")
     public ResponseEntity<AssignedChoresDTO> getAssignedChoresForKid(@PathVariable int kidId) {
         Optional<Kid> kidOptional = kidRepository.findById(kidId);
-
         if (kidOptional.isPresent()) {
             Kid kid = kidOptional.get();
             List<Chore> assignedChores = choreRepository.findByKid(kid);
@@ -41,7 +40,21 @@ public class KidsAssignedChore {
         }
     }
 
+    @GetMapping("/kids-assigned-chores-by-username/{userName}")
+    public ResponseEntity<AssignedChoresDTO> getAssignedChoresForKidNyUsername(@PathVariable String userName) {
+        Optional<Kid> kidOptional = kidRepository.findByUsername(userName);
+        if (kidOptional.isPresent()) {
+            Kid kid = kidOptional.get();
+            List<Chore> assignedChores = choreRepository.findByKid(kid);
 
+            AssignedChoresDTO assignedChoresDTO = new AssignedChoresDTO();
+            assignedChoresDTO.setKid(kid);
+            assignedChoresDTO.setChores(assignedChores);
+            return new ResponseEntity<>(assignedChoresDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     @PutMapping("/kid-complete/{kidId}/{choreId}")
     public ResponseEntity<String> markChoreAsComplete(@PathVariable int kidId, @PathVariable int choreId) {
         Optional<Kid> kidOptional = kidRepository.findById(kidId);
