@@ -21,6 +21,8 @@ public class Contact {
 
     private String name;
 
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private ContactStatus contactStatus;
 
