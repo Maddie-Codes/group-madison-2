@@ -15,7 +15,6 @@ public class ContactController {
 
     @PostMapping("/contact")
     public Contact procesContact(@RequestBody Contact contact) {
-        Contact newContact = new Contact();
-        return contactRepository.save(newContact);
+        return contactRepository.save(contact);
     }
 }
