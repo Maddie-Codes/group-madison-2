@@ -36,32 +36,6 @@ public class AssignGroupControllerApi {
         Optional<User> parent = userRepository.findByUsername(username);
         return kidRepository.findAllByParentId(parent.get().getId());
     }
-    /*
-    @GetMapping("/allchores")
-    public Optional<Chore> getAllChoresThisParent(@RequestParam Kid  kidId, @RequestParam String  duedate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate formatDate = LocalDate.parse(duedate, formatter);
-        return choreRepository.findById(KidId);
-    }
-*/
-    // Endpoint to fetch all chores for a specific parent
- /*   @GetMapping("/parent/{parentId}/chores")
-    public ResponseEntity<Map<Long, List<Chore>>> getAllChoresForParent(@PathVariable Long parentId) {
-        Optional<User> parentOptional = userRepository.findById(parentId);
-        if (parentOptional.isPresent()) {
-            User parent = parentOptional.get();
-            List<Kid> kids = kidRepository.findByParent(parent);
-            Map<Long, List<Chore>> kidChoresMap = new HashMap<>();
-            for (Kid kid : kids) {
-                List<Chore> chores = choreRepository.findByKid(kid);
-               kidChoresMap.put(kid.getKidId(), chores);
-            }
-            return ResponseEntity.ok(kidChoresMap);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-*/
     @GetMapping("allchores")
     public List<Chore> getAllChoresThisParent(@RequestParam Kid  kidId) {
       //  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
