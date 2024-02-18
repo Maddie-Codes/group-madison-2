@@ -31,17 +31,18 @@ public class AssignGroupInsControllerApi {
     public String statusIns(
              @RequestParam int selectedKidId, @RequestParam LocalDate dueDate, @RequestParam int setKidDropValue
     ) {
+        System.out.println("selectedKid"+selectedKidId);
+        System.out.println("setKidDropValue"+setKidDropValue);
+
         LocalDate maxDate = LocalDate.of(2024, 2, 16);
         //To insert the kid id for the kid selected from the group assign we need to change to kid type.
         Optional<Kid> kidOptional = kidRepository.findById(setKidDropValue);
           Kid dropValueKid = kidOptional.get();
         //Changing the kidid from int to Kid type for giving input to the chores  table.
         Optional<Kid> kidOptional1 = kidRepository.findById(selectedKidId);
-            Kid selectedKid = kidOptional.get();
-
+            Kid selectedKid = kidOptional1.get();
 
             List<Chore> chores = choreRepository.findByKid(selectedKid);
-
             // Insert each chore as a new record
             for (Chore chore : chores) {
                 Chore newChore = new Chore();
@@ -55,8 +56,8 @@ public class AssignGroupInsControllerApi {
                 newChore.setDueDate(dueDate);
                 newChore.setKid(dropValueKid);
                 choreRepository.save(newChore);
+
             }
-            System.out.println("inside");
         return "Group Chore is successfully assigned!";
     }
 
