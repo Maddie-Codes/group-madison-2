@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers(HttpMethod.POST, "/api/parentLogin", "/api/register", "/api/kidLogin","/api" +
-                        "/kidRegister", "/api/contact").permitAll()
+                        "/kidRegister").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
