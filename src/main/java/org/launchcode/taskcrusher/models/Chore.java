@@ -36,22 +36,12 @@ public class Chore {
     private Kid kid;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parentId")
     private User parent;
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 
     @Enumerated(EnumType.STRING)
     private ChoreStatus status;
-
-    @Column(name = "comment")
-    private String comment;
 
 
     public int getChoreId() {

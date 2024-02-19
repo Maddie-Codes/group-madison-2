@@ -1,21 +1,53 @@
 package org.launchcode.taskcrusher.models;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Data;
+
 
 @Entity
-public class Kid {
+@Data
+public class Kid{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int kidId;
 
     private String name;
 
+    private String username;
+
+    private String password;
+
     private int points;
 
     private double dollars;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    @JsonIgnore
+    private User parent;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 
     public int getKidId() {
@@ -48,6 +80,14 @@ public class Kid {
 
     public void setDollars(double dollars) {
         this.dollars = dollars;
+    }
+
+    public User getParent() {
+        return parent;
+    }
+
+    public void setParent(User parent) {
+        this.parent = parent;
     }
 
     @Override
