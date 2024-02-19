@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.launchcode.taskcrusher.enums.ChoreStatus;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "chores")
@@ -143,4 +144,5 @@ public class Chore {
                 ", kid=" + kid +
                 '}';
     }
+
 }

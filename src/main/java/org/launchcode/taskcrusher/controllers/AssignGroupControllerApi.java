@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -44,5 +45,18 @@ public class AssignGroupControllerApi {
       //  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
       //  LocalDate formatDate = LocalDate.parse(duedate, formatter);
         return choreRepository.findByKid(kidId);
+    }
+    @GetMapping("/allchoresdate")
+    public List<Chore> getAllChoresThisParentDate(@RequestParam Kid  kidId,@RequestParam String maxDate) {
+
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+          LocalDate formatMaxDate = LocalDate.parse(maxDate, formatter);
+          List<Chore> allChores = choreRepository.findByKid(kidId);
+
+        // Filter chores based on the date
+      List<Chore> filteredDateChore = allChores.stream()
+                .filter(chore -> chore.getDueDate().isEqual(formatMaxDate))
+                .toList();
+      return filteredDateChore;
     }
 }
