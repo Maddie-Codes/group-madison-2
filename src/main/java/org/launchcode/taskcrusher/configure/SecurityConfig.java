@@ -30,8 +30,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST,  "/api/parentLogin", "/api/register",
                                 "/api/kidLogin").permitAll() //<-ONLY endpoints where auth is not required
-                        .anyRequest().authenticated()
-
+                       // .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 );
 
         return http.build();
