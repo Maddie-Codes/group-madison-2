@@ -20,7 +20,7 @@ public class HolidayController {
     public String createHoliday(@RequestBody Holiday holiday) {
         Optional<Holiday> existingHoliday = holidayRepository.findByHolidayDate(holiday.getHolidayDate());
         if (existingHoliday.isEmpty()) {
-           holidayRepository.save(holiday);
+            holidayRepository.save(holiday);
             return "Inserted";
         }
         else {
