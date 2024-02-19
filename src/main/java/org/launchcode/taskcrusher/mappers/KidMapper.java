@@ -6,7 +6,7 @@ import org.launchcode.taskcrusher.models.dto.KidUserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface KidMapper {
 
     KidUserDto toKidUserDto(Kid kidUser);
