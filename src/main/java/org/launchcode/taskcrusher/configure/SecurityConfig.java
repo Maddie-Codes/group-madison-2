@@ -35,8 +35,23 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
-                        .anyRequest().authenticated()
-                );
+                        //Added by Monica//
+                                .requestMatchers(HttpMethod.POST, "**api/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "**api/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "**api/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "**api/**").permitAll()
+                        //Added by Monica //
+                                .requestMatchers(HttpMethod.POST,"/holiday**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/holiday**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,"/holiday**").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"/holiday**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"**insert**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"**insert**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,"**insert**").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"**insert**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"https://date.nager.at/api/v3/publicholidays**").permitAll()
+                                .anyRequest().permitAll()
+                                        );
 
         return http.build();
     }

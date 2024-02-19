@@ -33,10 +33,13 @@ public class AssignGroupControllerApi {
 
     @GetMapping("/allkids")
     public Iterable<Kid> getAllKidsForThisParent(@RequestParam String  username) {
+      //  Optional<User> parent = userRepository.findByUsername(username);
         Optional<User> parent = userRepository.findByUsername(username);
-        return kidRepository.findAllByParentId(parent.get().getId());
+        System.out.println(userRepository.findByUsername(username));
+        System.out.println(kidRepository.findById(parent.get().getId()));
+        return kidRepository.findById(parent.get().getId());
     }
-    @GetMapping("allchores")
+    @GetMapping("/allchores")
     public List<Chore> getAllChoresThisParent(@RequestParam Kid  kidId) {
       //  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
       //  LocalDate formatDate = LocalDate.parse(duedate, formatter);

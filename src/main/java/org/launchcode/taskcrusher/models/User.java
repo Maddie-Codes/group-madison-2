@@ -47,5 +47,3 @@ public class User {
     private List<Kid> kids;
 
 }
-
-

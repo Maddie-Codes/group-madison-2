@@ -1,8 +1,6 @@
 package org.launchcode.taskcrusher.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.launchcode.taskcrusher.enums.ChoreStatus;
 
 import java.time.LocalDate;
@@ -12,7 +10,7 @@ import java.time.LocalDate;
 public class Chore {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int choreId;
 
     private String name;
@@ -36,13 +34,23 @@ public class Chore {
     private Kid kid;
 
     @ManyToOne
-    @JoinColumn(name = "parentId")
+    @JoinColumn(name = "id")
     private User parent;
 
 
     @Enumerated(EnumType.STRING)
     private ChoreStatus status;
 
+    @Column(name = "comment")
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     public int getChoreId() {
         return choreId;
@@ -123,6 +131,7 @@ public class Chore {
     public void setParent(User parent) {
         this.parent = parent;
     }
+
 
     @Override
     public String toString() {
