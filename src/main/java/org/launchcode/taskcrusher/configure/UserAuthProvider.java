@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 //import org.launchcode.taskcrusher.models.dto.KidUserDto;
 import org.launchcode.taskcrusher.models.dto.KidUserDto;
 import org.launchcode.taskcrusher.models.dto.UserDto;
+import org.launchcode.taskcrusher.service.KidUserService;
 import org.launchcode.taskcrusher.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,8 @@ public class UserAuthProvider {
     private String secretKey;
 
     private final UserService userService;
+
+    private final KidUserService kidUserService;
 
     @PostConstruct
     protected void init() {
@@ -124,7 +127,7 @@ public class UserAuthProvider {
 
         DecodedJWT decoded = verifier.verify(kidToken);
 
-        KidUserDto kidUser = userService.findByKidUsername(decoded.getSubject());
+        KidUserDto kidUser = kidUserService.findByUsername(decoded.getSubject());
 
         return new UsernamePasswordAuthenticationToken(kidUser, null, Collections.emptyList());
     }

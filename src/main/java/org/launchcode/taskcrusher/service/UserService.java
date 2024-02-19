@@ -23,35 +23,24 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final KidRepository kidRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     private final UserMapper userMapper;
 
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByUsername(credentialsDto.username())
-                .orElseThrow(() -> new AppException("Unknown user???", HttpStatus.NOT_FOUND));
-
-//        Kid kidUser = kidRepository.findByUsername(credentialsDto.username())
-//                .orElseThrow(() -> new AppException("Unknown kid user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
             return userMapper.toUserDto(user);
         }
-//        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
-
-//        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), kidUser.getPassword())) {
-//            return userMapper.toKidUserDto(kidUser);
-//        }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    //------------------------------ questions about how to return savedKidUser-----------------------------
+
     public UserDto register(SignUpDto userDto) {
         Optional<User> optionalUser = userRepository.findByUsername(userDto.username());
-//        Optional<Kid> optionalKidUSer = kidRepository.findByUsername(userDto.username());
-        if (optionalUser.isPresent()/* || optionalKidUSer.isPresent()*/) {
+        if (optionalUser.isPresent()) {
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
         }
 
@@ -59,51 +48,13 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
         User savedUser = userRepository.save(user);
 
-//        Kid kidUser = userMapper.signUpToUser(userDto);
-//        kidUser.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.password())));
-//        Kid savedKidUser = userRepository.save(kidUser);
-
         return userMapper.toUserDto(savedUser);
     }
 
     public UserDto findByUsername(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException("Unknown user1", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
         return userMapper.toUserDto(user);
-    }
-
-    //------------------------------------------------------------------------------------------------------
-
-//-----------------------------PARENT SERVICE (above) KIDS SERVICE (below)-----------------------------------------
-
-    public KidUserDto kidLogin(CredentialsDto credentialsDto) {
-        Kid kidUser = kidRepository.findByUsername(credentialsDto.username())
-                .orElseThrow(() -> new AppException("Unknown user2", HttpStatus.NOT_FOUND));
-
-        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), kidUser.getPassword())) {
-            return userMapper.toKidUserDto(kidUser);
-        }
-        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
-    }
-
-    public KidUserDto kidRegister(KidSignUpDto kidUserDto) {
-        Optional<Kid> optionalKidUser = kidRepository.findByUsername(kidUserDto.username());
-        if (optionalKidUser.isPresent()) {
-            throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
-        }
-        Kid kidUser = userMapper.signUpToKidUser(kidUserDto);
-        kidUser.setPassword(passwordEncoder.encode(CharBuffer.wrap(kidUserDto.password())));
-
-        Kid savedKidUser = kidRepository.save(kidUser);
-
-        return userMapper.toKidUserDto(savedKidUser);
-
-    }
-
-    public KidUserDto findByKidUsername(String username) {
-        Kid kidUser = kidRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException("Unknown user3", HttpStatus.NOT_FOUND));
-        return userMapper.toKidUserDto(kidUser);
     }
 
 }
