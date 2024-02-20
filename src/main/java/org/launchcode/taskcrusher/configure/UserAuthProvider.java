@@ -41,7 +41,7 @@ public class UserAuthProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(UserDto user) {
+    public String createToken(UserDto user, Boolean isParent) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3600000); //1 hour
 
@@ -53,13 +53,14 @@ public class UserAuthProvider {
                 .withClaim("id",user.getId())
                 .withClaim("firstName", user.getFirstName())
                 .withClaim("lastName", user.getLastName())
+                .withClaim("isParent", isParent)
                 .sign(algorithm);
 
         logger.info("Generated Token: {}", token);// Print the token to console
         return token;
     }
 
-   public String createKidToken(KidUserDto kidUser) {
+   public String createKidToken(KidUserDto kidUser, Boolean isKid) {
        Date now = new Date();
        Date validity = new Date(now.getTime() + 3600000); //1 hour
 
@@ -69,6 +70,7 @@ public class UserAuthProvider {
                .withIssuedAt(now)
                .withExpiresAt(validity)
                .withClaim("firstName", kidUser.getFirstName())
+               .withClaim("isKid", isKid)
                .sign(algorithm);
 
        return kidToken;

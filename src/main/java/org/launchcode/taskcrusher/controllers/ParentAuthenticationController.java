@@ -28,15 +28,15 @@ public class ParentAuthenticationController {
     @PostMapping("/api/parentLogin")
     public ResponseEntity<UserDto> login(@RequestBody @Valid CredentialsDto credentialsDto) {
         UserDto userDto = userService.login(credentialsDto);
-        userDto.setToken(userAuthProvider.createToken(userDto));
+        userDto.setToken(userAuthProvider.createToken(userDto, true));
         return ResponseEntity.ok(userDto);
     }
 
     @PostMapping("/api/kidLogin")
     public ResponseEntity<KidUserDto> kidLogin(@RequestBody @Valid CredentialsDto credentialsDto) {
-        KidUserDto kidUserDto = kidUserService.kidLogin(credentialsDto);
-        kidUserDto.setToken(userAuthProvider.createKidToken(kidUserDto));
-        return ResponseEntity.ok(kidUserDto);
+        KidUserDto existingKidUser = kidUserService.kidLogin(credentialsDto);
+        existingKidUser.setToken(userAuthProvider.createKidToken(existingKidUser, true));
+        return ResponseEntity.ok(existingKidUser);
     }
 
     @PostMapping("/api/register")
@@ -44,7 +44,7 @@ public class ParentAuthenticationController {
         logger.info("Received a request: {}");
         System.out.println("Received registration request for user: " + user);
         UserDto createUser = userService.register(user);
-        createUser.setToken(userAuthProvider.createToken(createUser));
+        createUser.setToken(userAuthProvider.createToken(createUser, true));
         return ResponseEntity.created(URI.create("/users/" + createUser.getId())).body(createUser);
     }
 
