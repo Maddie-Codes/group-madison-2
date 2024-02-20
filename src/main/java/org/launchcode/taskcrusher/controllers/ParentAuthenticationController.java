@@ -51,7 +51,7 @@ public class ParentAuthenticationController {
     @PostMapping("api/kidRegister")
     public ResponseEntity<KidUserDto> addKidUser(@RequestBody @Valid KidSignUpDto kidUser) {
         KidUserDto createKidUser = kidUserService.kidRegister(kidUser);
-        createKidUser.setToken(userAuthProvider.createKidToken(createKidUser));
+//        createKidUser.setToken(userAuthProvider.createKidToken(createKidUser));
         return ResponseEntity.created(URI.create("/kidUsers/" + createKidUser.getId())).body(createKidUser);
     }
 
