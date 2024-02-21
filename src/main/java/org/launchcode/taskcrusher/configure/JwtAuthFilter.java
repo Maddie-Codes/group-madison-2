@@ -1,5 +1,8 @@
 package org.launchcode.taskcrusher.configure;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.channels.ScatteringByteChannel;
+import java.util.Base64;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -24,42 +28,44 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (header != null) {
-            String[] authElements = header.split(" ");
-            //JWT MUST have the correct length and bearer token
-            if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
-                try {
-                    if ("GET".equals(request.getMethod())) {
-                        SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateToken(authElements[1]));
-                    }
-                    else {SecurityContextHolder.getContext().setAuthentication(
+//if (userAuthProvider.getIsParent(" ")) {
+    if (header != null) {
+        String[] authElements = header.split(" ");
+        //JWT MUST have the correct length and bearer token
+        if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
+            try {
+                if ("GET".equals(request.getMethod())) {
+                    SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateToken(authElements[1]));
+                } else {
+                    SecurityContextHolder.getContext().setAuthentication(
                             userAuthProvider.validateTokenStrongly(authElements[1]));
-                    }
-                } catch (RuntimeException e) {
-                    //If something goes wrong, clear the security context and throw error
-                    SecurityContextHolder.clearContext();
-                    throw e;
                 }
+            } catch (RuntimeException e) {
+                //If something goes wrong, clear the security context and throw error
+                SecurityContextHolder.clearContext();
+                throw e;
             }
         }
-//
-//        if (header != null) {
-//            String[] authElements = header.split(" ");
-//            if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
-//                try{
-//                    if ("GET".equals(request.getMethod())) {
-//                        SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateKidToken(authElements[1]));
-//                    }
-//                    else {
-//                        SecurityContextHolder.getContext().setAuthentication(
-//                                userAuthProvider.validateKidTokenStrongly(authElements[1]));
-//                    }
-//                    } catch (RuntimeException e) {
-//                    SecurityContextHolder.clearContext();
-//                    throw e;
+    }
+//}
+//if (!userAuthProvider.getIsParent("token")){
+//    if (header != null) {
+//        String[] authElements = header.split(" ");
+//        if (authElements.length == 2 && "Bearer".equals(authElements[0])) {
+//            try {
+//                if ("GET".equals(request.getMethod())) {
+//                    SecurityContextHolder.getContext().setAuthentication(userAuthProvider.validateKidToken(authElements[1]));
+//                } else {
+//                    SecurityContextHolder.getContext().setAuthentication(
+//                            userAuthProvider.validateKidTokenStrongly(authElements[1]));
 //                }
+//            } catch (RuntimeException e) {
+//                SecurityContextHolder.clearContext();
+//                throw e;
 //            }
 //        }
+//    }
+//}
 
         filterChain.doFilter(request, response);
 
