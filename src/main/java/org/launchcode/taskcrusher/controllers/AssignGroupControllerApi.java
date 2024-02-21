@@ -30,7 +30,7 @@ public class AssignGroupControllerApi {
 
     @Autowired
     private ChoreRepository choreRepository;
-
+//This for getting the group chores getting the kids ,max(date) and chores details.
 
     @GetMapping("/allkids")
     public Iterable<Kid> getAllKidsForThisParent(@RequestParam String  username) {

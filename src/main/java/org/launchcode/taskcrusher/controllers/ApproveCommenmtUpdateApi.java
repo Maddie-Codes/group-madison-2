@@ -16,8 +16,7 @@ public class ApproveCommenmtUpdateApi {
     @Autowired
     private ChoreRepository choreRepository;
 
-
-    // Endpoint for a parent to approve a completed chore and set points/dollars
+//To update Only the comment in the chores table.
     @PostMapping("/approvecomment/{choreId}")
     public String approveComment(@PathVariable int choreId, @RequestParam String commentValue) {
         System.out.println("choreId"+choreId);
