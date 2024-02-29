@@ -52,9 +52,8 @@ public class UserAuthProvider {
                 .withClaim("id",user.getId())
                 .withClaim("firstName", user.getFirstName())
                 .withClaim("lastName", user.getLastName())
-                .withClaim("isParent", isParent)
+//                .withClaim("isParent", isParent)
                 .sign(algorithm);
-
         logger.info("Generated Token: {}", token);// Print the token to console
         return token;
     }
@@ -80,19 +79,14 @@ public class UserAuthProvider {
 
     public  Authentication validateTokenStrongly(String token) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
-
         JWTVerifier verifier = JWT.require(algorithm).build();
-
         DecodedJWT decoded = verifier.verify(token);
-
         UserDto user = userService.findByUsername(decoded.getSubject());
-
         user.setId(decoded.getClaim("id").asLong());
-
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 
-   public String createKidToken(KidUserDto kidUser, Boolean isKid) {
+   public String createKidToken(KidUserDto kidUser) {
        Date now = new Date();
        Date validity = new Date(now.getTime() + 3600000); //1 hour
 
@@ -102,7 +96,6 @@ public class UserAuthProvider {
                .withIssuedAt(now)
                .withExpiresAt(validity)
                .withClaim("firstName", kidUser.getFirstName())
-               .withClaim("isKid", isKid)
                .sign(algorithm);
 
        return kidToken;
@@ -135,10 +128,10 @@ public class UserAuthProvider {
         return new UsernamePasswordAuthenticationToken(kidUser, null, Collections.emptyList());
     }
 
-    public Boolean getIsParent(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(secretKey);
-        JWTVerifier verifier = JWT.require(algorithm).build();
-        DecodedJWT decoded = verifier.verify(token);
-        return decoded.getClaim("isParent").asBoolean();
-    }
+//    public Boolean getIsParent(String token) {
+//        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+//        JWTVerifier verifier = JWT.require(algorithm).build();
+//        DecodedJWT decoded = verifier.verify(token);
+//        return decoded.getClaim("isParent").asBoolean();
+//    }
 }

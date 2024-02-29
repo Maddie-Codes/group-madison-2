@@ -1,11 +1,13 @@
 package org.launchcode.taskcrusher.controllers;
 
+import org.launchcode.taskcrusher.configure.JwtAuthFilter;
 import org.launchcode.taskcrusher.configure.UserAuthProvider;
 import org.launchcode.taskcrusher.models.dto.*;
 import org.launchcode.taskcrusher.service.KidUserService;
 import org.launchcode.taskcrusher.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +37,7 @@ public class ParentAuthenticationController {
     @PostMapping("/api/kidLogin")
     public ResponseEntity<KidUserDto> kidLogin(@RequestBody @Valid CredentialsDto credentialsDto) {
         KidUserDto existingKidUser = kidUserService.kidLogin(credentialsDto);
-        existingKidUser.setToken(userAuthProvider.createKidToken(existingKidUser, true));
+        existingKidUser.setToken(userAuthProvider.createKidToken(existingKidUser));
         return ResponseEntity.ok(existingKidUser);
     }
 
