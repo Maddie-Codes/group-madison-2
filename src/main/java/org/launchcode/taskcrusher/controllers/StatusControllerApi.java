@@ -21,7 +21,6 @@ public class StatusControllerApi {
 
     @Autowired
     private KidRepository kidRepository;
-
     // Endpoint for a parent to approve a completed chore and set points/dollars
     @PostMapping("/approve/{choreId}/{parentId}")
     public String approveChore(@PathVariable int choreId, @PathVariable Long parentId) {

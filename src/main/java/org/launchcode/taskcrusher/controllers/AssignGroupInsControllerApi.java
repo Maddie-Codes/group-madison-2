@@ -74,17 +74,19 @@ public class AssignGroupInsControllerApi {
         List<Chore> chores = choreRepository.findByKid(selectedKid);
         // Insert each chore as a new record
         for (Chore chore : chores) {
-            Chore newChore = new Chore();
-            newChore.setName(chore.getName());
-            newChore.setDescription(chore.getDescription());
-            newChore.setImage(chore.getImage());
-            newChore.setValueType(chore.getValueType());
-            newChore.setValue((int) (chore.getValue()*rewardPointsMax*rewardPoints));
-            newChore.setStatus(ChoreStatus.valueOf("ASSIGNED"));
-            newChore.setParent(chore.getParent());
-            newChore.setDueDate(dueDate);
-            newChore.setKid(dropValueKid);
-            choreRepository.save(newChore);
+            if (chore.getDueDate().equals(maxDueDate)) {
+                Chore newChore = new Chore();
+                newChore.setName(chore.getName());
+                newChore.setDescription(chore.getDescription());
+                newChore.setImage(chore.getImage());
+                newChore.setValueType(chore.getValueType());
+                newChore.setValue((int) (chore.getValue() * rewardPointsMax * rewardPoints));
+                newChore.setStatus(ChoreStatus.valueOf("ASSIGNED"));
+                newChore.setParent(chore.getParent());
+                newChore.setDueDate(dueDate);
+                newChore.setKid(dropValueKid);
+                choreRepository.save(newChore);
+            }
 
         }
         return "Group Chore is successfully assigned!";
