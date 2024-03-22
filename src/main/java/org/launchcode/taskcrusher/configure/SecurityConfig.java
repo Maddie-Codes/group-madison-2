@@ -35,6 +35,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"https://date.nager.at/api/v3/publicholidays**").permitAll()
                         .anyRequest().authenticated()
                 );
 

@@ -16,7 +16,7 @@ import java.util.Optional;
 public class HolidayController {
     @Autowired
     private HolidayRepository holidayRepository;
-    @PostMapping("/holiday-insert")
+    @PostMapping("/api/holiday-insert")
     public String createHoliday(@RequestBody Holiday holiday) {
         Optional<Holiday> existingHoliday = holidayRepository.findByHolidayDate(holiday.getHolidayDate());
         if (existingHoliday.isEmpty()) {

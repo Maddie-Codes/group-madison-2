@@ -13,7 +13,7 @@ import java.util.List;
 public class ApiController {
     private final ApiService apiService;
 
-    @GetMapping("/holiday-data")
+    @GetMapping("/api/holiday-data")
     //Gets the Input date from the React front end when the Parent clicks on the Date.
     public Boolean endpointCallApi(@RequestParam String dueDate) {
         //Getting the Year alone
